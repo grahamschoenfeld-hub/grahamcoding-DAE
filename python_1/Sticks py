@@ -1,16 +1,46 @@
 print("Welcome to the Sticks Game 👋")
 
+# Each player starts with 1 finger on both hands
 player1 = [1, 1]
 player2 = [1, 1]
-turn = 1
+turn = 1  # 1 = Player 1, 2 = Player 2
 
-def get_hand_input(player_name, prompt):
-    while True:
-        try:
-            hand = int(input(f"{player_name}, {prompt} (0 = left, 1 = right): "))
-            if hand in [0, 1]:
-                return hand
-            else:
-                print("Invalid input. Please enter 0 or 1.")
-        except ValueError:
-            print("Invalid input. Please enter a number.")
+while True:
+    print(f"\nPlayer 1: {player1}   Player 2: {player2}")
+
+    # Check for winner
+    if player1 == [0, 0]:
+        print("🎉 Player 2 wins!")
+        break
+    if player2 == [0, 0]:
+        print("🎉 Player 1 wins!")
+        break
+
+    # Decide whose turn it is
+    if turn == 1:
+        print("👉 Player 1's turn")
+        move = input("Type 'attack' or 'split': ").lower()
+
+        if move == "split":
+            print("Split feature coming soon...")
+        else:
+            a = int(input("Your hand (0=left,1=right): "))
+            d = int(input("Player 2's hand (0=left,1=right): "))
+            player2[d] += player1[a]
+            if player2[d] >= 5:
+                player2[d] = 0
+            turn = 2
+
+    else:
+        print("👉 Player 2's turn")
+        move = input("Type 'attack' or 'split': ").lower()
+
+        if move == "split":
+            print("Split feature coming soon...")
+        else:
+            a = int(input("Your hand (0=left,1=right): "))
+            d = int(input("Player 1's hand (0=left,1=right): "))
+            player1[d] += player2[a]
+            if player1[d] >= 5:
+                player1[d] = 0
+            turn = 1
