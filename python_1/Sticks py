@@ -1,0 +1,16 @@
+print("Welcome to the Sticks Game 👋")
+
+player1 = [1, 1]
+player2 = [1, 1]
+turn = 1
+
+def get_hand_input(player_name, prompt):
+    while True:
+        try:
+            hand = int(input(f"{player_name}, {prompt} (0 = left, 1 = right): "))
+            if hand in [0, 1]:
+                return hand
+            else:
+                print("Invalid input. Please enter 0 or 1.")
+        except ValueError:
+            print("Invalid input. Please enter a number.")
