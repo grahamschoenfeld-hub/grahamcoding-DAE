@@ -1,46 +1,95 @@
-print("Welcome to the Sticks Game 👋")
+# Simple Sticks (Chopsticks) Game
+print("Welcome to the Sticks Game! 👋")
+print("Each player starts with 1 finger on each hand. Let's go!\n")
 
-# Each player starts with 1 finger on both hands
-player1 = [1, 1]
+# Starting hands
+player1 = [1, 1]  # [left, right]
 player2 = [1, 1]
 turn = 1  # 1 = Player 1, 2 = Player 2
 
+# Function to get valid hand input
+def get_hand(player_name):
+    while True:
+        try:
+            hand = int(input(f"{player_name}, pick a hand (0=left, 1=right): "))
+            if hand in [0, 1]:
+                return hand
+            else:
+                print("Oops! Pick 0 or 1 only.")
+        except ValueError:
+            print("Hmm, that's not a number. Try again!")
+
+# Function to get valid split input
+def get_split(total, player_name):
+    while True:
+        try:
+            left = int(input(f"{player_name}, how many fingers on your left hand? (0 to {total}): "))
+            if 0 <= left <= total:
+                right = total - left
+                return [left, right]
+            else:
+                print(f"Can't do that! Pick a number between 0 and {total}.")
+        except ValueError:
+            print("That’s not a number! Try again.")
+
 while True:
-    print(f"\nPlayer 1: {player1}   Player 2: {player2}")
+    # Show current hands
+    print(f"\nPlayer 1: Left={player1[0]} Right={player1[1]}   Player 2: Left={player2[0]} Right={player2[1]}")
 
     # Check for winner
     if player1 == [0, 0]:
-        print("🎉 Player 2 wins!")
+        print("🎉 Player 2 wins! Nice one!")
         break
     if player2 == [0, 0]:
-        print("🎉 Player 1 wins!")
+        print("🎉 Player 1 wins! Well done!")
         break
 
-    # Decide whose turn it is
+    # Player 1's turn
     if turn == 1:
         print("👉 Player 1's turn")
-        move = input("Type 'attack' or 'split': ").lower()
+        move = input("Do you want to 'attack' or 'split'? ").lower()
 
         if move == "split":
-            print("Split feature coming soon...")
+            total = sum(player1)
+            if total <= 1:
+                print("Not enough fingers to split, try attacking instead!")
+            else:
+                new_hands = get_split(total, "Player 1")
+                if new_hands != player1:
+                    player1 = new_hands
+                    print(f"Player 1 split to {player1}")
+                else:
+                    print("You didn't change your hands, try again next turn.")
         else:
-            a = int(input("Your hand (0=left,1=right): "))
-            d = int(input("Player 2's hand (0=left,1=right): "))
+            a = get_hand("Player 1")
+            d = get_hand("Player 2")
             player2[d] += player1[a]
             if player2[d] >= 5:
                 player2[d] = 0
             turn = 2
 
+    # Player 2's turn
     else:
         print("👉 Player 2's turn")
-        move = input("Type 'attack' or 'split': ").lower()
+        move = input("Do you want to 'attack' or 'split'? ").lower()
 
         if move == "split":
-            print("Split feature coming soon...")
+            total = sum(player2)
+            if total <= 1:
+                print("Not enough fingers to split, try attacking instead!")
+            else:
+                new_hands = get_split(total, "Player 2")
+                if new_hands != player2:
+                    player2 = new_hands
+                    print(f"Player 2 split to {player2}")
+                else:
+                    print("You didn't change your hands, try again next turn.")
         else:
-            a = int(input("Your hand (0=left,1=right): "))
-            d = int(input("Player 1's hand (0=left,1=right): "))
+            a = get_hand("Player 2")
+            d = get_hand("Player 1")
             player1[d] += player2[a]
             if player1[d] >= 5:
                 player1[d] = 0
             turn = 1
+
+print("\nThanks for playing! Hope you had fun! 👏")
